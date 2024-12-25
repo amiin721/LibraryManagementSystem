@@ -14,9 +14,20 @@ public class LibraryServiceImpl implements LibraryService {
 
     private final Map<String, Book> bookStorage = new HashMap<>();
 
-    @Override
-    public BookDto addBook(BookDto bookDto) {
+    private Book convertDtoToEntity(BookDto bookDto) {
+        return new Book(bookDto.isbn(), bookDto.title(), bookDto.author(), bookDto.publicationYear());
+    }
 
+    private BookDto convertEntityToDto(Book book) {
+        return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthor(), book.getPublicationYear(), book.getIsAvailable());
+    }
+
+    private void validateIfBookAlreadyExists(String isbn) {
+        if (bookStorage.containsKey(isbn))
+            throw new CustomException(String.format(BOOK_ALREADY_EXISTS, isbn));
+    }
+
+    private void validateAddBookRequest(BookDto bookDto) {
         if (bookDto.isbn() == null || bookDto.isbn().isEmpty())
             throw new CustomException(INVALID_ISBN);
 
@@ -29,14 +40,18 @@ public class LibraryServiceImpl implements LibraryService {
         if (bookDto.publicationYear() <= 0 || Calendar.getInstance().get(Calendar.YEAR) < bookDto.publicationYear())
             throw new CustomException(INVALID_PUBLICATION_YEAR);
 
-        if(bookStorage.containsKey(bookDto.isbn()))
-            throw new CustomException(String.format(BOOK_ALREADY_EXISTS, bookDto.isbn()));
+        validateIfBookAlreadyExists(bookDto.isbn());
+    }
 
-        Book book = new Book(bookDto.isbn(), bookDto.title(), bookDto.author(), bookDto.publicationYear());
+    @Override
+    public BookDto addBook(BookDto bookDto) {
+
+        validateAddBookRequest(bookDto);
+
+        Book book = convertDtoToEntity(bookDto);
         bookStorage.put(bookDto.isbn(), book);
 
-        BookDto response = new BookDto(book.getIsbn(), book.getTitle(), book.getAuthor(), book.getPublicationYear(), book.getIsAvailable());
-        return response;
+        return convertEntityToDto(book);
     }
 
 }
