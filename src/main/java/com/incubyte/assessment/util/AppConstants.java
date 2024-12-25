@@ -13,6 +13,9 @@ public class AppConstants {
     //Common Error Constants
     public final static String MESSAGE_FORMAT_ARGUMENT_COUNT_MISMATCH = "Mismatch between placeholders and arguments. Expected %s arguments but got %s";
 
+    //Library Management Success Constants
+    public final static String BOOK_ADDED_SUCCESSFULLY = BOOK_MESSAGE_PREFIX + " has been added successfully to the library.";
+
     //Library Management Error Constants
     public final static String BOOK_ALREADY_EXISTS = BOOK_MESSAGE_PREFIX + " already exists in the library.";
     public final static String INVALID_ISBN = "ISBN cannot be null or empty.";

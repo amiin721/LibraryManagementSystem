@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.incubyte.assessment.util.AppConstants.*;
+import static com.incubyte.assessment.util.MessageFormatUtil.displayMessage;
 
 public class LibraryServiceImpl implements LibraryService {
 
@@ -51,6 +52,7 @@ public class LibraryServiceImpl implements LibraryService {
         Book book = convertDtoToEntity(bookDto);
         bookStorage.put(bookDto.isbn(), book);
 
+        displayMessage(BOOK_ADDED_SUCCESSFULLY, book.getIsbn());
         return convertEntityToDto(book);
     }
 
