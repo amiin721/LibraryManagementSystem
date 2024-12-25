@@ -44,16 +44,25 @@ public class LibraryServiceImpl implements LibraryService {
         validateIfBookAlreadyExists(bookDto.isbn());
     }
 
+    private void addBookToLibrary(Book book) {
+        bookStorage.put(book.getIsbn(), book);
+    }
+
     @Override
     public BookDto addBook(BookDto bookDto) {
 
         validateAddBookRequest(bookDto);
 
         Book book = convertDtoToEntity(bookDto);
-        bookStorage.put(bookDto.isbn(), book);
+        addBookToLibrary(book);
 
         displayMessage(BOOK_ADDED_SUCCESSFULLY, book.getIsbn());
         return convertEntityToDto(book);
+    }
+
+    @Override
+    public BookDto borrowBook(String isbn) {
+        return null;
     }
 
 }

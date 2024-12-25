@@ -15,9 +15,12 @@ public class AppConstants {
 
     //Library Management Success Constants
     public final static String BOOK_ADDED_SUCCESSFULLY = BOOK_MESSAGE_PREFIX + " has been added successfully to the library.";
+    public final static String BOOK_BORROWED_SUCCESSFULLY = BOOK_MESSAGE_PREFIX + " has been borrowed successfully from the library.";
 
     //Library Management Error Constants
     public final static String BOOK_ALREADY_EXISTS = BOOK_MESSAGE_PREFIX + " already exists in the library.";
+    public final static String BOOK_DOES_NOT_EXIST = BOOK_MESSAGE_PREFIX + " does not exist in the library.";
+    public final static String BOOK_NOT_AVAILABLE = BOOK_MESSAGE_PREFIX + " has been already borrowed and not available in the library.";
     public final static String INVALID_ISBN = "ISBN cannot be null or empty.";
     public final static String INVALID_TITLE = "Title cannot be null or empty.";
     public final static String INVALID_AUTHOR = "Author cannot be null or empty.";

@@ -4,4 +4,6 @@ import com.incubyte.assessment.model.BookDto;
 
 public interface LibraryService {
     BookDto addBook(BookDto book);
+
+    BookDto borrowBook(String isbn);
 }

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
 import static com.incubyte.assessment.util.AppConstants.*;
+import static com.incubyte.assessment.util.MessageFormatUtil.formatMessage;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -49,7 +50,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_ISBN, exception.getMessage());
+        assertEquals(formatMessage(INVALID_ISBN), exception.getMessage());
     }
 
     @Test
@@ -58,7 +59,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_ISBN, exception.getMessage());
+        assertEquals(formatMessage(INVALID_ISBN), exception.getMessage());
     }
 
     @Test
@@ -67,7 +68,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_TITLE, exception.getMessage());
+        assertEquals(formatMessage(INVALID_TITLE), exception.getMessage());
     }
 
     @Test
@@ -76,7 +77,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_TITLE, exception.getMessage());
+        assertEquals(formatMessage(INVALID_TITLE), exception.getMessage());
     }
 
     @Test
@@ -85,7 +86,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_AUTHOR, exception.getMessage());
+        assertEquals(formatMessage(INVALID_AUTHOR), exception.getMessage());
     }
 
     @Test
@@ -94,7 +95,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_AUTHOR, exception.getMessage());
+        assertEquals(formatMessage(INVALID_AUTHOR), exception.getMessage());
     }
 
     @Test
@@ -103,7 +104,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_PUBLICATION_YEAR, exception.getMessage());
+        assertEquals(formatMessage(INVALID_PUBLICATION_YEAR), exception.getMessage());
     }
 
     @Test
@@ -112,7 +113,7 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
-        assertEquals(INVALID_PUBLICATION_YEAR, exception.getMessage());
+        assertEquals(formatMessage(INVALID_PUBLICATION_YEAR), exception.getMessage());
     }
 
     @Test
@@ -121,6 +122,6 @@ public class LibraryServiceAddBookTest {
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(validBookDto));
 
-        assertEquals(String.format(BOOK_ALREADY_EXISTS, validBookDto.isbn()), exception.getMessage());
+        assertEquals(formatMessage(BOOK_ALREADY_EXISTS, validBookDto.isbn()), exception.getMessage());
     }
 }
