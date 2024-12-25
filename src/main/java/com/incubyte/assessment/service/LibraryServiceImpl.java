@@ -3,13 +3,16 @@ package com.incubyte.assessment.service;
 import com.incubyte.assessment.exception.CustomException;
 import com.incubyte.assessment.model.Book;
 import com.incubyte.assessment.model.BookDto;
+import com.incubyte.assessment.util.AppConstants;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.incubyte.assessment.util.AppConstants.*;
 import static com.incubyte.assessment.util.MessageFormatUtil.displayMessage;
+import static com.incubyte.assessment.util.MessageFormatUtil.formatMessage;
 
 public class LibraryServiceImpl implements LibraryService {
 
@@ -62,7 +65,24 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public BookDto borrowBook(String isbn) {
-        return null;
+
+        if (!bookStorage.containsKey(isbn)) {
+            throw new CustomException(formatMessage(AppConstants.BOOK_DOES_NOT_EXIST, isbn));
+        }
+
+        Book book = bookStorage.get(isbn);
+        if (!book.getIsAvailable()) {
+            throw new CustomException(formatMessage(AppConstants.BOOK_NOT_AVAILABLE, isbn));
+        }
+
+        book.setIsAvailable(false);
+        book.setLastBorrowedAt(LocalDateTime.now());
+
+        addBookToLibrary(book);
+
+        displayMessage(AppConstants.BOOK_BORROWED_SUCCESSFULLY, book.getIsbn());
+
+        return convertEntityToDto(book);
     }
 
 }
