@@ -18,6 +18,10 @@ public class LibraryServiceImpl implements LibraryService {
 
     private final Map<String, Book> bookStorage = new HashMap<>();
 
+    private void addBookToLibrary(Book book) {
+        bookStorage.put(book.getIsbn(), book);
+    }
+
     private Book convertDtoToEntity(BookDto bookDto) {
         return new Book(bookDto.isbn(), bookDto.title(), bookDto.author(), bookDto.publicationYear());
     }
@@ -29,6 +33,12 @@ public class LibraryServiceImpl implements LibraryService {
     private void validateIfBookAlreadyExists(String isbn) {
         if (bookStorage.containsKey(isbn))
             throw new CustomException(String.format(BOOK_ALREADY_EXISTS, isbn));
+    }
+
+    private void validateIfBookDoesNotExist(String isbn) {
+        if (!bookStorage.containsKey(isbn)) {
+            throw new CustomException(formatMessage(AppConstants.BOOK_DOES_NOT_EXIST, isbn));
+        }
     }
 
     private void validateAddBookRequest(BookDto bookDto) {
@@ -47,10 +57,6 @@ public class LibraryServiceImpl implements LibraryService {
         validateIfBookAlreadyExists(bookDto.isbn());
     }
 
-    private void addBookToLibrary(Book book) {
-        bookStorage.put(book.getIsbn(), book);
-    }
-
     @Override
     public BookDto addBook(BookDto bookDto) {
 
@@ -63,18 +69,21 @@ public class LibraryServiceImpl implements LibraryService {
         return convertEntityToDto(book);
     }
 
-    @Override
-    public BookDto borrowBook(String isbn) {
-
-        if (!bookStorage.containsKey(isbn)) {
-            throw new CustomException(formatMessage(AppConstants.BOOK_DOES_NOT_EXIST, isbn));
-        }
+    private Book validateIsBookAvailable(String isbn) {
+        validateIfBookDoesNotExist(isbn);
 
         Book book = bookStorage.get(isbn);
         if (!book.getIsAvailable()) {
             throw new CustomException(formatMessage(AppConstants.BOOK_NOT_AVAILABLE, isbn));
         }
 
+        return book;
+    }
+
+    @Override
+    public BookDto borrowBook(String isbn) {
+
+        Book book = validateIsBookAvailable(isbn);
         book.setIsAvailable(false);
         book.setLastBorrowedAt(LocalDateTime.now());
 
