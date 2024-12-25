@@ -32,7 +32,7 @@ public class LibraryServiceAddBookTest {
     }
 
     @Test
-    void testAddBook_ValidBook() {
+    void testAddBook_ValidBook_SuccessScenario() {
         BookDto bookDto = libraryService.addBook(validBookDto);
 
         assertNotNull(bookDto);
@@ -116,7 +116,7 @@ public class LibraryServiceAddBookTest {
     }
 
     @Test
-    void testAddBook_BookAlreadyExists() {
+    void testAddBook_BookAlreadyExists_FailureScenario() {
         libraryService.addBook(validBookDto);
 
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(validBookDto));
