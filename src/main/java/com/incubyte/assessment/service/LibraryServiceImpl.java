@@ -3,7 +3,6 @@ package com.incubyte.assessment.service;
 import com.incubyte.assessment.exception.CustomException;
 import com.incubyte.assessment.model.Book;
 import com.incubyte.assessment.model.BookDto;
-import com.incubyte.assessment.repository.RepositoryType;
 import com.incubyte.assessment.repository.library.LibraryRepository;
 import com.incubyte.assessment.repository.library.LibraryRepositoryFactory;
 import com.incubyte.assessment.util.AppConstants;
@@ -39,16 +38,8 @@ public class LibraryServiceImpl implements LibraryService {
     private final LibraryRepository libraryRepository;
 
     //Constructor based dependency injection
-    public LibraryServiceImpl() {
-        this.libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(RepositoryType.IN_MEMORY);
-    }
-
-    //Constructor based dependency injection
-    public LibraryServiceImpl(RepositoryType repositoryType) {
-        if (repositoryType == null) {
-            throw new CustomException(formatMessage(REPOSITORY_TYPE_CANNOT_BE_NULL));
-        }
-        this.libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(repositoryType);
+    public LibraryServiceImpl(LibraryRepository libraryRepository) {
+        this.libraryRepository = libraryRepository;
     }
 
     private Book convertDtoToEntity(BookDto bookDto) {

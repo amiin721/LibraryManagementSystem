@@ -3,11 +3,15 @@ package com.incubyte.assessment;
 import com.incubyte.assessment.exception.CustomException;
 import com.incubyte.assessment.model.BookDto;
 import com.incubyte.assessment.repository.RepositoryType;
+import com.incubyte.assessment.repository.library.LibraryRepository;
+import com.incubyte.assessment.repository.library.LibraryRepositoryFactory;
 import com.incubyte.assessment.service.LibraryService;
 import com.incubyte.assessment.service.LibraryServiceImpl;
 
 import java.util.List;
 import java.util.Scanner;
+
+import static com.incubyte.assessment.util.AppConstants.DEFAULT_REPOSITORY_TYPE;
 
 /**
  * Command-Line Interface (CLI) for the Library Management System.
@@ -35,7 +39,7 @@ public class LibraryManagementSystemCLI {
 
         Scanner scanner = new Scanner(System.in);
 
-        initializeLibraryService(RepositoryType.IN_MEMORY);
+        initializeLibraryService(DEFAULT_REPOSITORY_TYPE);
 
         while (true) {
             printMenu();
@@ -66,7 +70,8 @@ public class LibraryManagementSystemCLI {
     }
 
     private static void initializeLibraryService(RepositoryType repositoryType) {
-        libraryService = new LibraryServiceImpl(repositoryType);
+        LibraryRepository libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(repositoryType);
+        libraryService = new LibraryServiceImpl(libraryRepository);
         System.out.println("Library initialized with " + repositoryType.name() + " repository.");
     }
 

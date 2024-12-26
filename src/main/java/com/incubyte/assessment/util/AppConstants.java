@@ -1,5 +1,7 @@
 package com.incubyte.assessment.util;
 
+import com.incubyte.assessment.repository.RepositoryType;
+
 /**
  * Utility class that holds constant values used throughout the library system.
  * This class provides commonly used message templates and error messages to ensure consistency
@@ -9,6 +11,7 @@ package com.incubyte.assessment.util;
 public class AppConstants {
 
     public static final String BOOK_MESSAGE_PREFIX = "Book with ISBN %s";
+    public static final RepositoryType DEFAULT_REPOSITORY_TYPE = RepositoryType.IN_MEMORY;
 
     //Common Error Constants
     public final static String MESSAGE_FORMAT_ARGUMENT_COUNT_MISMATCH = "Mismatch between placeholders and arguments. Expected %s arguments but got %s";

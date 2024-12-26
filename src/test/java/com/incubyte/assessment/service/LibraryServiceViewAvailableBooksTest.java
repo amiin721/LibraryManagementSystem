@@ -2,6 +2,7 @@ package com.incubyte.assessment.service;
 
 import com.incubyte.assessment.model.Book;
 import com.incubyte.assessment.model.BookDto;
+import com.incubyte.assessment.repository.library.LibraryRepository;
 import com.incubyte.assessment.repository.library.LibraryRepositoryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.mockito.InjectMocks;
 
 import java.util.List;
 
+import static com.incubyte.assessment.util.AppConstants.DEFAULT_REPOSITORY_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -23,16 +25,19 @@ public class LibraryServiceViewAvailableBooksTest {
     @InjectMocks
     private LibraryServiceImpl libraryService;
 
+    LibraryRepository libraryRepository;
+
     private Book book1;
     private Book book2;
 
     private BookDto validBookDto1;
     private BookDto validBookDto2;
 
-
     @BeforeEach
     void setUp() {
-        libraryService = new LibraryServiceImpl();
+        libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(DEFAULT_REPOSITORY_TYPE);
+        libraryService = new LibraryServiceImpl(libraryRepository);
+
         LibraryRepositoryFactory.getInstance().clearCache();
 
         validBookDto1 = new BookDto("12345", "Test Book 1", "Author Name 1", 2020, true);

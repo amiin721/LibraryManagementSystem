@@ -2,7 +2,7 @@ package com.incubyte.assessment.service;
 
 import com.incubyte.assessment.exception.CustomException;
 import com.incubyte.assessment.model.BookDto;
-import com.incubyte.assessment.repository.RepositoryType;
+import com.incubyte.assessment.repository.library.LibraryRepository;
 import com.incubyte.assessment.repository.library.LibraryRepositoryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,11 +25,14 @@ public class LibraryServiceAddBookTest {
     @InjectMocks
     private LibraryServiceImpl libraryService;
 
+    LibraryRepository libraryRepository;
+
     private BookDto validBookDto;
 
     @BeforeEach
     void setUp() {
-        libraryService = new LibraryServiceImpl(RepositoryType.IN_MEMORY);
+        libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(DEFAULT_REPOSITORY_TYPE);
+        libraryService = new LibraryServiceImpl(libraryRepository);
         LibraryRepositoryFactory.getInstance().clearCache();
 
         validBookDto = new BookDto("12345", "Test Book", "Author Name", 2020, true);
