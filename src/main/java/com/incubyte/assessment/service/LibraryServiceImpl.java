@@ -22,6 +22,10 @@ public class LibraryServiceImpl implements LibraryService {
         bookStorage.put(book.getIsbn(), book);
     }
 
+    private Book getBookFromLibrary(String isbn) {
+        return bookStorage.get(isbn);
+    }
+
     private Book convertDtoToEntity(BookDto bookDto) {
         return new Book(bookDto.isbn(), bookDto.title(), bookDto.author(), bookDto.publicationYear());
     }
@@ -80,30 +84,41 @@ public class LibraryServiceImpl implements LibraryService {
         return book;
     }
 
-    @Override
-    public BookDto borrowBook(String isbn) {
-
+    private Book performBorrowProcedureOnBook(String isbn) {
         Book book = validateIsBookAvailable(isbn);
         book.setIsAvailable(false);
         book.setLastBorrowedAt(LocalDateTime.now());
 
         addBookToLibrary(book);
+        return book;
+    }
 
+    @Override
+    public BookDto borrowBook(String isbn) {
+        Book book = performBorrowProcedureOnBook(isbn);
         displayMessage(AppConstants.BOOK_BORROWED_SUCCESSFULLY, book.getIsbn());
 
         return convertEntityToDto(book);
     }
 
-    @Override
-    public BookDto returnBook(String isbn) {
+    private Book performReturnProcedureOnBook(String isbn) {
         validateIfBookDoesNotExist(isbn);
 
-        Book book = bookStorage.get(isbn);
+        Book book = getBookFromLibrary(isbn);
+        if(book.getIsAvailable()) {
+            return book;
+        }
+
         book.setIsAvailable(true);
         book.setLastReturnedAt(LocalDateTime.now());
 
         addBookToLibrary(book);
+        return book;
+    }
 
+    @Override
+    public BookDto returnBook(String isbn) {
+        Book book = performReturnProcedureOnBook(isbn);
         displayMessage(AppConstants.BOOK_RETURNED_SUCCESSFULLY, book.getIsbn());
 
         return convertEntityToDto(book);
