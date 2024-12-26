@@ -96,7 +96,17 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public BookDto returnBook(String isbn) {
-        return null;
+        validateIfBookDoesNotExist(isbn);
+
+        Book book = bookStorage.get(isbn);
+        book.setIsAvailable(true);
+        book.setLastReturnedAt(LocalDateTime.now());
+
+        addBookToLibrary(book);
+
+        displayMessage(AppConstants.BOOK_RETURNED_SUCCESSFULLY, book.getIsbn());
+
+        return convertEntityToDto(book);
     }
 
 }
