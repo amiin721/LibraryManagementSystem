@@ -35,7 +35,6 @@ public class LibraryServiceBorrowBookTest {
         validBookDto = new BookDto("12345", "Test Book", "Author Name", 2020, true);
 
         validBook = new Book("12345", "Test Book", "Author Name", 2020);
-        validBook.setIsAvailable(true);
     }
 
     @Test
@@ -58,9 +57,7 @@ public class LibraryServiceBorrowBookTest {
         libraryService.addBook(validBookDto);
         libraryService.borrowBook(isbn);
 
-        CustomException exception = assertThrows(CustomException.class, () -> {
-            libraryService.borrowBook(isbn);
-        });
+        CustomException exception = assertThrows(CustomException.class, () -> libraryService.borrowBook(isbn));
         assertEquals(formatMessage(BOOK_NOT_AVAILABLE, isbn), exception.getMessage());
     }
 
@@ -70,9 +67,7 @@ public class LibraryServiceBorrowBookTest {
         String isbn = validBook.getIsbn();
 
         // Act & Assert
-        CustomException exception = assertThrows(CustomException.class, () -> {
-            libraryService.borrowBook(isbn);
-        });
+        CustomException exception = assertThrows(CustomException.class, () -> libraryService.borrowBook(isbn));
         assertEquals(formatMessage(BOOK_DOES_NOT_EXIST, isbn), exception.getMessage());
     }
 

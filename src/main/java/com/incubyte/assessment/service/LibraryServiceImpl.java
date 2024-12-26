@@ -94,4 +94,9 @@ public class LibraryServiceImpl implements LibraryService {
         return convertEntityToDto(book);
     }
 
+    @Override
+    public BookDto returnBook(String isbn) {
+        return null;
+    }
+
 }
