@@ -32,6 +32,8 @@ public class LibraryServiceBorrowBookTest {
 
     @BeforeEach
     void setUp() {
+        //Initializing variables and objects required for the test.
+
         libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(DEFAULT_REPOSITORY_TYPE);
         libraryService = new LibraryServiceImpl(libraryRepository);
         LibraryRepositoryFactory.getInstance().clearCache();
@@ -43,12 +45,14 @@ public class LibraryServiceBorrowBookTest {
 
     @Test
     void testBorrowBook_Success() {
+        //Applying test pre-conditions
         String isbn = validBook.getIsbn();
-
         libraryService.addBook(validBookDto);
 
+        //Performing test operation
         BookDto borrowedBookDto = libraryService.borrowBook(isbn);
 
+        //Asserting test outcomes
         assertNotNull(borrowedBookDto);
         assertEquals(isbn, borrowedBookDto.isbn());
         assertFalse(borrowedBookDto.isAvailable());
@@ -56,20 +60,27 @@ public class LibraryServiceBorrowBookTest {
 
     @Test
     void testBorrowBook_BookNotAvailable() {
+        //Applying test pre-conditions
         String isbn = validBook.getIsbn();
-
         libraryService.addBook(validBookDto);
         libraryService.borrowBook(isbn);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.borrowBook(isbn));
+
+        //Asserting test outcomes
         assertEquals(formatMessage(BOOK_NOT_AVAILABLE, isbn), exception.getMessage());
     }
 
     @Test
     void testBorrowBook_BookDoesNotExist() {
+        //Applying test pre-conditions
         String isbn = validBook.getIsbn();
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.borrowBook(isbn));
+
+        //Asserting test outcomes
         assertEquals(formatMessage(BOOK_DOES_NOT_EXIST, isbn), exception.getMessage());
     }
 

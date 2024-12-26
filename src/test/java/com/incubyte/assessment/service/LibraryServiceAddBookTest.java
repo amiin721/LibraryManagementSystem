@@ -31,6 +31,8 @@ public class LibraryServiceAddBookTest {
 
     @BeforeEach
     void setUp() {
+        //Initializing variables and objects required for the test.
+
         libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(DEFAULT_REPOSITORY_TYPE);
         libraryService = new LibraryServiceImpl(libraryRepository);
         LibraryRepositoryFactory.getInstance().clearCache();
@@ -40,8 +42,10 @@ public class LibraryServiceAddBookTest {
 
     @Test
     void testAddBook_ValidBook_SuccessScenario() {
+        //Performing test operation
         BookDto bookDto = libraryService.addBook(validBookDto);
 
+        //Asserting test outcomes
         assertNotNull(bookDto);
         assertEquals(validBookDto.isbn(), bookDto.isbn());
         assertEquals(validBookDto.title(), bookDto.title());
@@ -52,82 +56,109 @@ public class LibraryServiceAddBookTest {
 
     @Test
     void testAddBook_InvalidIsbn_Null() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto(null, "Test Book", "Author Name", 2020, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_ISBN), exception.getMessage());
     }
 
     @Test
     void testAddBook_InvalidIsbn_Empty() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto("", "Test Book", "Author Name", 2020, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_ISBN), exception.getMessage());
     }
 
     @Test
     void testAddBook_InvalidTitle_Null() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto("12345", null, "Author Name", 2020, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_TITLE), exception.getMessage());
     }
 
     @Test
     void testAddBook_InvalidTitle_Empty() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto("12345", "", "Author Name", 2020, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_TITLE), exception.getMessage());
     }
 
     @Test
     void testAddBook_InvalidAuthor_Null() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto("12345", "Test Book", null, 2020, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_AUTHOR), exception.getMessage());
     }
 
     @Test
     void testAddBook_InvalidAuthor_Empty() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto("12345", "Test Book", "", 2020, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_AUTHOR), exception.getMessage());
     }
 
     @Test
     void testAddBook_InvalidPublicationYear_Future() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto("12345", "Test Book", "Author Name", 9999, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_PUBLICATION_YEAR), exception.getMessage());
     }
 
     @Test
     void testAddBook_InvalidPublicationYear_Zero() {
+        //Applying test pre-conditions
         BookDto invalidBookDto = new BookDto("12345", "Test Book", "Author Name", 0, true);
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(invalidBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(INVALID_PUBLICATION_YEAR), exception.getMessage());
     }
 
     @Test
     void testAddBook_BookAlreadyExists_FailureScenario() {
+        //Performing test operation
         libraryService.addBook(validBookDto);
 
+        //Asserting test outcomes
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.addBook(validBookDto));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(BOOK_ALREADY_EXISTS, validBookDto.isbn()), exception.getMessage());
     }
 }

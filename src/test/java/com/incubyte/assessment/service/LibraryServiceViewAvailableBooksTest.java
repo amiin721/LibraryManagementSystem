@@ -35,6 +35,8 @@ public class LibraryServiceViewAvailableBooksTest {
 
     @BeforeEach
     void setUp() {
+        //Initializing variables and objects required for the test.
+
         libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(DEFAULT_REPOSITORY_TYPE);
         libraryService = new LibraryServiceImpl(libraryRepository);
 
@@ -49,11 +51,14 @@ public class LibraryServiceViewAvailableBooksTest {
 
     @Test
     void testViewAvailableBooks_Success_Scenario1() {
+        //Applying test pre-conditions
         libraryService.addBook(validBookDto1);
         libraryService.addBook(validBookDto2);
 
+        //Performing test operation
         List<BookDto> availableBooks = libraryService.viewAvailableBooks();
 
+        //Asserting test outcomes
         assertEquals(2, availableBooks.size());
         assertEquals(book1.getIsbn(), availableBooks.get(0).isbn());
         assertEquals(book2.getIsbn(), availableBooks.get(1).isbn());
@@ -63,13 +68,15 @@ public class LibraryServiceViewAvailableBooksTest {
 
     @Test
     void testViewAvailableBooks_Success_Scenario2() {
+        //Applying test pre-conditions
         libraryService.addBook(validBookDto1);
         libraryService.addBook(validBookDto2);
-
         libraryService.borrowBook(book1.getIsbn());
 
+        //Performing test operation
         List<BookDto> availableBooks = libraryService.viewAvailableBooks();
 
+        //Asserting test outcomes
         assertEquals(1, availableBooks.size());
         assertNotEquals(book1.getIsbn(), availableBooks.get(0).isbn());
         assertEquals(book2.getIsbn(), availableBooks.get(0).isbn());
@@ -78,7 +85,10 @@ public class LibraryServiceViewAvailableBooksTest {
 
     @Test
     void testViewAvailableBooks_NoAvailableBooks() {
+        //Performing test operation
         List<BookDto> availableBooks = libraryService.viewAvailableBooks();
+
+        //Asserting test outcomes
         assertEquals(0, availableBooks.size());
     }
 

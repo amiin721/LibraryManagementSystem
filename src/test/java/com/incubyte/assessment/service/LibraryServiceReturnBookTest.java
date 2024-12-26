@@ -33,6 +33,8 @@ public class LibraryServiceReturnBookTest {
 
     @BeforeEach
     void setUp() {
+        //Initializing variables and objects required for the test.
+
         libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(DEFAULT_REPOSITORY_TYPE);
         libraryService = new LibraryServiceImpl(libraryRepository);
         LibraryRepositoryFactory.getInstance().clearCache();
@@ -44,33 +46,42 @@ public class LibraryServiceReturnBookTest {
 
     @Test
     void testReturnBook_Success_Scenario1() {
+        //Applying test pre-conditions
         String isbn = validBook.getIsbn();
         libraryService.addBook(validBookDto);
 
+        //Performing test operation
         BookDto bookDto = libraryService.returnBook(isbn);
 
+        //Asserting test outcomes
         assertTrue(bookDto.isAvailable());
         assertEquals(isbn, bookDto.isbn());
     }
 
     @Test
     void testReturnBook_Success_Scenario2() {
+        //Applying test pre-conditions
         String isbn = validBook.getIsbn();
         libraryService.addBook(validBookDto);
         libraryService.borrowBook(isbn);
 
+        //Performing test operation
         BookDto bookDto = libraryService.returnBook(isbn);
 
+        //Asserting test outcomes
         assertTrue(bookDto.isAvailable());
         assertEquals(isbn, bookDto.isbn());
     }
 
     @Test
     void testReturnBook_BookDoesNotExist() {
+        //Applying test pre-conditions
         String isbn = validBook.getIsbn();
 
+        //Performing test operation
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.returnBook(isbn));
 
+        //Asserting test outcomes
         assertEquals(formatMessage(AppConstants.BOOK_DOES_NOT_EXIST, isbn), exception.getMessage());
     }
 
