@@ -37,9 +37,21 @@ public class LibraryServiceReturnBookTest {
     }
 
     @Test
-    void testReturnBook_Success() {
+    void testReturnBook_Success_Scenario1() {
         String isbn = validBook.getIsbn();
         libraryService.addBook(validBookDto);
+
+        BookDto bookDto = libraryService.returnBook(isbn);
+
+        assertTrue(bookDto.isAvailable());
+        assertEquals(isbn, bookDto.isbn());
+    }
+
+    @Test
+    void testReturnBook_Success_Scenario2() {
+        String isbn = validBook.getIsbn();
+        libraryService.addBook(validBookDto);
+        libraryService.borrowBook(isbn);
 
         BookDto bookDto = libraryService.returnBook(isbn);
 
