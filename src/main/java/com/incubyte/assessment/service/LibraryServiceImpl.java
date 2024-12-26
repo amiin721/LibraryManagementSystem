@@ -17,6 +17,23 @@ import static com.incubyte.assessment.util.AppConstants.*;
 import static com.incubyte.assessment.util.MessageFormatUtil.displayMessage;
 import static com.incubyte.assessment.util.MessageFormatUtil.formatMessage;
 
+/**
+ * Implementation of the {@link LibraryService} interface for managing library operations.
+ *
+ * <p>This class provides methods for adding, borrowing, returning, and viewing available books
+ * in the library system.</p>
+ *
+ * <p>This implementation demonstrates constructor-based dependency injection for repository selection,
+ * either using the default in-memory repository or a specified type.</p>
+ *
+ * <p>Dependencies:</p>
+ * <ul>
+ *   <li>{@link LibraryRepository}: For CRUD operations on books.</li>
+ *   <li>{@link LibraryRepositoryFactory}: For creating and managing repository instances.</li>
+ *   <li>{@link Book} and {@link BookDto}: Domain and data transfer objects for books.</li>
+ *   <li>{@link AppConstants} and utility classes for reusable constants and formatting.</li>
+ * </ul>
+ */
 public class LibraryServiceImpl implements LibraryService {
 
     private final LibraryRepository libraryRepository;
