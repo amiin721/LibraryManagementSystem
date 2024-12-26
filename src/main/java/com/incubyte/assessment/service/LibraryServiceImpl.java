@@ -3,10 +3,15 @@ package com.incubyte.assessment.service;
 import com.incubyte.assessment.exception.CustomException;
 import com.incubyte.assessment.model.Book;
 import com.incubyte.assessment.model.BookDto;
+import com.incubyte.assessment.repository.RepositoryType;
+import com.incubyte.assessment.repository.library.LibraryRepository;
+import com.incubyte.assessment.repository.library.LibraryRepositoryFactory;
 import com.incubyte.assessment.util.AppConstants;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import static com.incubyte.assessment.util.AppConstants.*;
 import static com.incubyte.assessment.util.MessageFormatUtil.displayMessage;
@@ -14,14 +19,19 @@ import static com.incubyte.assessment.util.MessageFormatUtil.formatMessage;
 
 public class LibraryServiceImpl implements LibraryService {
 
-    private final Map<String, Book> bookStorage = new HashMap<>();
+    private final LibraryRepository libraryRepository;
 
-    private void addBookToLibrary(Book book) {
-        bookStorage.put(book.getIsbn(), book);
+    //Constructor based dependency injection
+    public LibraryServiceImpl() {
+        this.libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(RepositoryType.IN_MEMORY);
     }
 
-    private Book getBookFromLibrary(String isbn) {
-        return bookStorage.get(isbn);
+    //Constructor based dependency injection
+    public LibraryServiceImpl(RepositoryType repositoryType) {
+        if (repositoryType == null) {
+            throw new CustomException(formatMessage(REPOSITORY_TYPE_CANNOT_BE_NULL));
+        }
+        this.libraryRepository = LibraryRepositoryFactory.getInstance().createRepository(repositoryType);
     }
 
     private Book convertDtoToEntity(BookDto bookDto) {
@@ -33,12 +43,12 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     private void validateIfBookAlreadyExists(String isbn) {
-        if (bookStorage.containsKey(isbn))
+        if (libraryRepository.existsById(isbn))
             throw new CustomException(String.format(BOOK_ALREADY_EXISTS, isbn));
     }
 
     private void validateIfBookDoesNotExist(String isbn) {
-        if (!bookStorage.containsKey(isbn)) {
+        if (!libraryRepository.existsById(isbn)) {
             throw new CustomException(formatMessage(AppConstants.BOOK_DOES_NOT_EXIST, isbn));
         }
     }
@@ -65,7 +75,7 @@ public class LibraryServiceImpl implements LibraryService {
         validateAddBookRequest(bookDto);
 
         Book book = convertDtoToEntity(bookDto);
-        addBookToLibrary(book);
+        libraryRepository.add(book);
 
         displayMessage(BOOK_ADDED_SUCCESSFULLY, book.getIsbn());
         return convertEntityToDto(book);
@@ -74,7 +84,7 @@ public class LibraryServiceImpl implements LibraryService {
     private Book validateIsBookAvailable(String isbn) {
         validateIfBookDoesNotExist(isbn);
 
-        Book book = bookStorage.get(isbn);
+        Book book = libraryRepository.getById(isbn);
         if (!book.getIsAvailable()) {
             throw new CustomException(formatMessage(AppConstants.BOOK_NOT_AVAILABLE, isbn));
         }
@@ -87,7 +97,7 @@ public class LibraryServiceImpl implements LibraryService {
         book.setIsAvailable(false);
         book.setLastBorrowedAt(LocalDateTime.now());
 
-        addBookToLibrary(book);
+        libraryRepository.add(book);
         return book;
     }
 
@@ -102,7 +112,7 @@ public class LibraryServiceImpl implements LibraryService {
     private Book performReturnProcedureOnBook(String isbn) {
         validateIfBookDoesNotExist(isbn);
 
-        Book book = getBookFromLibrary(isbn);
+        Book book = libraryRepository.getById(isbn);
         if (book.getIsAvailable()) {
             return book;
         }
@@ -110,7 +120,7 @@ public class LibraryServiceImpl implements LibraryService {
         book.setIsAvailable(true);
         book.setLastReturnedAt(LocalDateTime.now());
 
-        addBookToLibrary(book);
+        libraryRepository.add(book);
         return book;
     }
 
@@ -122,8 +132,8 @@ public class LibraryServiceImpl implements LibraryService {
         return convertEntityToDto(book);
     }
 
-    private List<BookDto> fetchAvailableBookListUsingFilter() {
-        return new ArrayList<>(bookStorage.values()).stream()
+    private List<BookDto> fetchAvailableBookListUsingFilter(List<Book> bookList) {
+        return new ArrayList<>(bookList).stream()
                 .map(this::convertEntityToDto)
                 .filter(BookDto::isAvailable)
                 .toList();
@@ -131,13 +141,15 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public List<BookDto> viewAvailableBooks() {
-        if (bookStorage.isEmpty()) {
+        List<Book> bookList = libraryRepository.getAll();
+
+        if (bookList.isEmpty()) {
             displayMessage(NO_AVAILABLE_BOOKS);
             return new ArrayList<>();
         }
 
         displayMessage(FETCHED_AVAILABLE_BOOK_LIST_SUCCESSFULLY);
-        return fetchAvailableBookListUsingFilter();
+        return fetchAvailableBookListUsingFilter(bookList);
     }
 
 }

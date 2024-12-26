@@ -3,10 +3,10 @@ package com.incubyte.assessment.service;
 import com.incubyte.assessment.exception.CustomException;
 import com.incubyte.assessment.model.Book;
 import com.incubyte.assessment.model.BookDto;
+import com.incubyte.assessment.repository.library.LibraryRepositoryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 
 import static com.incubyte.assessment.util.AppConstants.BOOK_DOES_NOT_EXIST;
 import static com.incubyte.assessment.util.AppConstants.BOOK_NOT_AVAILABLE;
@@ -30,7 +30,8 @@ public class LibraryServiceBorrowBookTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        libraryService = new LibraryServiceImpl();
+        LibraryRepositoryFactory.getInstance().clearCache();
 
         validBookDto = new BookDto("12345", "Test Book", "Author Name", 2020, true);
 

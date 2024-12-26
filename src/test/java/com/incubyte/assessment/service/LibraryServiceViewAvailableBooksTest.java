@@ -2,10 +2,10 @@ package com.incubyte.assessment.service;
 
 import com.incubyte.assessment.model.Book;
 import com.incubyte.assessment.model.BookDto;
+import com.incubyte.assessment.repository.library.LibraryRepositoryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
@@ -32,7 +32,8 @@ public class LibraryServiceViewAvailableBooksTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        libraryService = new LibraryServiceImpl();
+        LibraryRepositoryFactory.getInstance().clearCache();
 
         validBookDto1 = new BookDto("12345", "Test Book 1", "Author Name 1", 2020, true);
         validBookDto2 = new BookDto("6789", "Test Book 2", "Author Name 2", 2020, true);
