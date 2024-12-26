@@ -6,10 +6,7 @@ import com.incubyte.assessment.model.BookDto;
 import com.incubyte.assessment.util.AppConstants;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.incubyte.assessment.util.AppConstants.*;
 import static com.incubyte.assessment.util.MessageFormatUtil.displayMessage;
@@ -127,7 +124,16 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public List<BookDto> viewAvailableBooks() {
-        return null;
+        if(bookStorage.isEmpty()) {
+            displayMessage(NO_AVAILABLE_BOOKS);
+            return new ArrayList<>();
+        }
+
+        List<Book> bookList = new ArrayList<>(bookStorage.values());
+        return bookList.stream()
+                .map(book -> convertEntityToDto(book))
+                .filter(bookDto -> bookDto.isAvailable())
+                .toList();
     }
 
 }

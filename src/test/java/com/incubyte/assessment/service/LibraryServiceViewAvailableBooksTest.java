@@ -66,7 +66,7 @@ public class LibraryServiceViewAvailableBooksTest {
 
         assertEquals(1, availableBooks.size());
         assertNotEquals(book1.getIsbn(), availableBooks.get(0).isbn());
-        assertEquals(book2.getIsbn(), availableBooks.get(1).isbn());
+        assertEquals(book2.getIsbn(), availableBooks.get(0).isbn());
         assertTrue(availableBooks.get(0).isAvailable());
     }
 
