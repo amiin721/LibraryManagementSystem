@@ -8,6 +8,7 @@ import com.incubyte.assessment.util.AppConstants;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.incubyte.assessment.util.AppConstants.*;
@@ -122,6 +123,11 @@ public class LibraryServiceImpl implements LibraryService {
         displayMessage(AppConstants.BOOK_RETURNED_SUCCESSFULLY, book.getIsbn());
 
         return convertEntityToDto(book);
+    }
+
+    @Override
+    public List<BookDto> viewAvailableBooks() {
+        return null;
     }
 
 }
