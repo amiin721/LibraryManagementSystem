@@ -9,7 +9,6 @@ A simple **Library Management System** with the following features:
 
 This project focuses on clean, maintainable code while adhering to **Test-Driven Development (TDD)** principles, SOLID principles and clean code practices.
 
----
 
 ## Instructions for Running
 
@@ -28,7 +27,6 @@ This project focuses on clean, maintainable code while adhering to **Test-Driven
 - Option 1 : Execute `mvn clean test`
 - Option 2 : Import [Run all tests with coverage](.run/Run%20all%20tests%20with%20coverage.run.xml) configuration in your IDE and run the tests.
 
----
 
 ## Test-Driven Development (TDD)
 1.  Wrote failing test cases before implementing any functionality.
@@ -53,5 +51,5 @@ This project focuses on clean, maintainable code while adhering to **Test-Driven
     - The `LibraryServiceImpl` uses constructor-based dependency injection to decouple service logic from repository creation.
 
 ### Principles Followed
-- **SOLID Principles.**
-- **Clean Code Practices.**
+- SOLID Principles.
+- Clean Code Practices.
