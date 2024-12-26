@@ -12,6 +12,7 @@ public class AppConstants {
 
     //Common Error Constants
     public final static String MESSAGE_FORMAT_ARGUMENT_COUNT_MISMATCH = "Mismatch between placeholders and arguments. Expected %s arguments but got %s";
+    public final static String INVALID_REPOSITORY_TYPE = "Unknown RepositoryType : %s";
 
     //Library Management Success Constants
     public final static String BOOK_ADDED_SUCCESSFULLY = BOOK_MESSAGE_PREFIX + " has been added successfully to the library.";
