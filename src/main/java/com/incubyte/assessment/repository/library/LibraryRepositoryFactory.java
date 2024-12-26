@@ -7,7 +7,6 @@ import com.incubyte.assessment.repository.RepositoryType;
 
 import java.util.EnumMap;
 
-import static com.incubyte.assessment.util.AppConstants.INVALID_REPOSITORY_TYPE;
 import static com.incubyte.assessment.util.AppConstants.REPOSITORY_TYPE_CANNOT_BE_NULL;
 import static com.incubyte.assessment.util.MessageFormatUtil.formatMessage;
 
@@ -56,7 +55,6 @@ public class LibraryRepositoryFactory implements BaseRepositoryFactory<Book> {
             case IN_MEMORY -> new InMemoryLibraryRepository();
             case DATABASE -> new DatabaseLibraryRepository();
             case FILESYSTEM -> new FileSystemLibraryRepository();
-            default -> throw new CustomException(formatMessage(INVALID_REPOSITORY_TYPE, type.name()));
         };
 
         cache.put(type, repository);
