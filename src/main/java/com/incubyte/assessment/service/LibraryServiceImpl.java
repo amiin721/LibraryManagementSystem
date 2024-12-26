@@ -103,7 +103,7 @@ public class LibraryServiceImpl implements LibraryService {
         validateIfBookDoesNotExist(isbn);
 
         Book book = getBookFromLibrary(isbn);
-        if(book.getIsAvailable()) {
+        if (book.getIsAvailable()) {
             return book;
         }
 
@@ -122,18 +122,21 @@ public class LibraryServiceImpl implements LibraryService {
         return convertEntityToDto(book);
     }
 
+    private List<BookDto> fetchAvailableBookListUsingFilter() {
+        return new ArrayList<>(bookStorage.values()).stream()
+                .map(this::convertEntityToDto)
+                .filter(BookDto::isAvailable)
+                .toList();
+    }
+
     @Override
     public List<BookDto> viewAvailableBooks() {
-        if(bookStorage.isEmpty()) {
+        if (bookStorage.isEmpty()) {
             displayMessage(NO_AVAILABLE_BOOKS);
             return new ArrayList<>();
         }
 
-        List<Book> bookList = new ArrayList<>(bookStorage.values());
-        return bookList.stream()
-                .map(book -> convertEntityToDto(book))
-                .filter(bookDto -> bookDto.isAvailable())
-                .toList();
+        return fetchAvailableBookListUsingFilter();
     }
 
 }
