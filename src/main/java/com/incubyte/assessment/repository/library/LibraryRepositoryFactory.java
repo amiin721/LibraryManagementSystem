@@ -8,6 +8,7 @@ import com.incubyte.assessment.repository.RepositoryType;
 import java.util.EnumMap;
 
 import static com.incubyte.assessment.util.AppConstants.INVALID_REPOSITORY_TYPE;
+import static com.incubyte.assessment.util.AppConstants.REPOSITORY_TYPE_CANNOT_BE_NULL;
 import static com.incubyte.assessment.util.MessageFormatUtil.formatMessage;
 
 /**
@@ -22,7 +23,8 @@ public class LibraryRepositoryFactory implements BaseRepositoryFactory<Book> {
     private final EnumMap<RepositoryType, LibraryRepository> cache = new EnumMap<>(RepositoryType.class);
 
     //Keeping constructor private to avoid class instantiation from outside this class.
-    private LibraryRepositoryFactory() {}
+    private LibraryRepositoryFactory() {
+    }
 
     /**
      * Retrieves the singleton instance of the factory.
@@ -42,6 +44,10 @@ public class LibraryRepositoryFactory implements BaseRepositoryFactory<Book> {
      */
     @Override
     public LibraryRepository createRepository(RepositoryType type) {
+        if (type == null) {
+            throw new CustomException(formatMessage(REPOSITORY_TYPE_CANNOT_BE_NULL));
+        }
+
         if (cache.containsKey(type)) {
             return cache.get(type);
         }
@@ -55,6 +61,13 @@ public class LibraryRepositoryFactory implements BaseRepositoryFactory<Book> {
 
         cache.put(type, repository);
         return repository;
+    }
+
+    /**
+     * Clears the repository cache for fresh repository instances.
+     */
+    public void clearCache() {
+        cache.clear();
     }
 
 }
