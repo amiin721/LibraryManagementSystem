@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class MessageFormatUtilTest {
 
-    // Test case 1: Valid format with correct number of arguments
     @Test
     void testFormatMessage_validArguments() {
         String format = "Book with ISBN %s is %s";
@@ -30,7 +29,6 @@ class MessageFormatUtilTest {
         assertEquals("Book with ISBN 123456 is available", result);
     }
 
-    // Test case 2: Valid format with no arguments
     @Test
     void testFormatMessage_noArguments() {
         String format = "Library is open";
@@ -40,7 +38,6 @@ class MessageFormatUtilTest {
         assertEquals(format, result);
     }
 
-    // Test case 3: Invalid number of arguments (too few arguments)
     @Test
     void testFormatMessage_tooFewArguments() {
         String format = "Book with ISBN %s is %s";
@@ -51,7 +48,6 @@ class MessageFormatUtilTest {
         assertEquals("Mismatch between placeholders and arguments. Expected 2 arguments but got 1", exception.getMessage());
     }
 
-    // Test case 4: Invalid number of arguments (too many arguments)
     @Test
     void testFormatMessage_tooManyArguments() {
         String format = "Book with ISBN %s is %s";
@@ -64,7 +60,6 @@ class MessageFormatUtilTest {
         assertEquals("Mismatch between placeholders and arguments. Expected 2 arguments but got 3", exception.getMessage());
     }
 
-    // Test case 5: Format with no placeholders (%s)
     @Test
     void testFormatMessage_noPlaceholders() {
         String format = "No placeholders here";
@@ -74,7 +69,6 @@ class MessageFormatUtilTest {
         assertEquals("No placeholders here", result);
     }
 
-    // Test case 6: Display message with valid format and arguments
     @Test
     void testDisplayMessage_validArguments() {
         String format = "The book with ISBN %s is %s";
@@ -92,7 +86,6 @@ class MessageFormatUtilTest {
         System.setOut(originalOut);
     }
 
-    // Test case 7: Test format with no arguments and display message
     @Test
     void testDisplayMessage_noArguments() {
         String format = "Library is open";

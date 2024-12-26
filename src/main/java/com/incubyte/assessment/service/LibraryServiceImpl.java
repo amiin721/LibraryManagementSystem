@@ -136,6 +136,7 @@ public class LibraryServiceImpl implements LibraryService {
             return new ArrayList<>();
         }
 
+        displayMessage(FETCHED_AVAILABLE_BOOK_LIST_SUCCESSFULLY);
         return fetchAvailableBookListUsingFilter();
     }
 

@@ -63,10 +63,8 @@ public class LibraryServiceBorrowBookTest {
 
     @Test
     void testBorrowBook_BookDoesNotExist() {
-        // Arrange
         String isbn = validBook.getIsbn();
 
-        // Act & Assert
         CustomException exception = assertThrows(CustomException.class, () -> libraryService.borrowBook(isbn));
         assertEquals(formatMessage(BOOK_DOES_NOT_EXIST, isbn), exception.getMessage());
     }
